@@ -33,6 +33,10 @@ app.use(
 
 app.use(bodyParser.json());
 
+app.get("/dummy", (req, res) => {
+    res.send("backend is running");
+});
+
 app.post('/submitFeedback', (req, res) => {
     const { username, experience } = req.body;
 
