@@ -178,6 +178,7 @@ app.post('/endRideSMS', (req, res) => {
     const messageBody = `
       The ride has been completed.
       Your friend has reached their desired location
+      You can give your feedback here: https://moveinsync-3ayb.vercel.app/
     `;
   
     client.messages
@@ -214,6 +215,26 @@ app.post('/saveJourney', (req, res) => {
     }
     });
 })
+
+app.get('/getAllJourneys', async (req, res) => {
+  const query = 'SELECT * FROM journeys';
+  connection.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ success: false, error: 'Database error' });
+    }
+    res.json({ success: true, data: results });
+  });
+});
+
+app.get('/getFeedbacks', async (req, res) => {
+  const query = 'SELECT * FROM user_feedback ORDER BY created_at DESC';
+  connection.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ success: false, error: 'Database error' });
+    }
+    res.json({ success: true, data: results });
+  });
+});
   
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

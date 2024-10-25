@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
@@ -143,9 +144,7 @@ const MapComponent = () => {
                 });
 
                 const bounds = new mapboxgl.LngLatBounds();
-                routeData.geometry.coordinates.forEach((coord) =>
-                  bounds.extend(coord)
-                );
+                routeData.geometry.coordinates.forEach((coord) => bounds.extend(coord));
                 map.current.fitBounds(bounds, { padding: 50 });
 
                 setShowShareButton(true);
@@ -225,14 +224,18 @@ const MapComponent = () => {
         alert('Error sending ride end notification.');
       });
 
-      const driverName = "John Doe";
-      const cabNumber = "ABC-1234";
+    const driverName = 'John Doe';
+    const cabNumber = 'ABC-1234';
 
-      const data = {
-        destination, driverName, cabNumber, estimatedTime, estimatedCost
-      }
-      
-      axios
+    const data = {
+      destination,
+      driverName,
+      cabNumber,
+      estimatedTime,
+      estimatedCost,
+    };
+
+    axios
       .post('http://localhost:5000/saveJourney', data)
       .then((res) => {
         console.log(res);
@@ -240,7 +243,7 @@ const MapComponent = () => {
       .catch((err) => {
         alert(err);
       });
-      handleLogout();
+    handleLogout();
   };
 
   const handleLogout = () => {
@@ -251,56 +254,51 @@ const MapComponent = () => {
     <div>
       <div ref={mapContainer} style={{ height: '100vh', width: '100%' }} />
       <div
-        style={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          zIndex: 1,
-          backgroundColor: 'white',
-          padding: '15px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-          maxWidth: '350px',
-        }}
+        className="position-absolute top-0 start-0 mt-4 ms-4 bg-white p-4 rounded shadow"
+        style={{ maxWidth: '350px', zIndex: 1 }}
       >
         <input
           type="text"
           placeholder="Enter destination"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
+          className="form-control mb-3"
         />
-        <button onClick={getRoute} style={{ width: '100%', padding: '10px' }}>
+        <button onClick={getRoute} className="btn btn-primary w-100 mb-3">
           Book Ride
         </button>
-        <button onClick={handleLogout} style={{ width: '100%', padding: '10px', marginTop: '5px' }}>
+        <button onClick={handleLogout} className="btn btn-secondary w-100 mb-3">
           Logout
         </button>
 
         {estimatedTime !== null && estimatedCost !== null && (
-          <div style={{ marginTop: '15px' }}>
-            <p><strong>Estimated Travel Time:</strong> {estimatedTime} minutes</p>
-            <p><strong>Estimated Cost:</strong> ₹{estimatedCost}</p>
+          <div className="alert alert-info mt-3">
+            <p>
+              <strong>Estimated Travel Time:</strong> {estimatedTime} minutes
+            </p>
+            <p>
+              <strong>Estimated Cost:</strong> ₹{estimatedCost}
+            </p>
           </div>
         )}
 
         {showShareButton && (
-          <div style={{ marginTop: '15px' }}>
+          <div className="mt-3">
             <input
               type="text"
               placeholder="Enter phone number (e.g., +919876543210)"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              style={{ width: '100%', marginBottom: '10px', padding: '8px' }}
+              className="form-control mb-3"
             />
-            <button onClick={handleShareRideDetails} style={{ width: '100%', padding: '10px' }}>
+            <button onClick={handleShareRideDetails} className="btn btn-success w-100 mb-3">
               Share Ride Details
             </button>
 
             {rideActive && (
               <button
                 onClick={handleEndRide}
-                style={{ width: '100%', padding: '10px', marginTop: '10px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px' }}
+                className="btn btn-danger w-100"
               >
                 End Ride
               </button>

@@ -17,7 +17,7 @@ const FeedbackForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/submitFeedback', {
+            const response = await axios.post('https://moveinsync-1.onrender.com/submitFeedback', {
                 username,
                 experience
             });
